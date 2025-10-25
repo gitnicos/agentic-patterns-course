@@ -127,15 +127,20 @@ class ToolAgent:
         )
         agent_chat_history = ChatHistory([user_prompt])
 
+        # !! This important section of ToolAgent functioning !!
+        # Check if tools usage is warranted in  the user message by running Model
         tool_call_response = completions_create(
             self.client, messages=tool_chat_history, model=self.model
         )
+        # extract tool calls prepared by the model per promot guidleins 
         tool_calls = extract_tag_content(str(tool_call_response), "tool_call")
 
+        #invoke all toools deemed to be warrented to be used by the model
         if tool_calls.found:
             observations = self.process_tool_calls(tool_calls.content)
             update_chat_history(
                 agent_chat_history, f'f"Observation: {observations}"', "user"
             )
 
+        # formulate prompted from user initial ask and tools invocation results and submit to model agaim
         return completions_create(self.client, agent_chat_history, self.model)
