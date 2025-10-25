@@ -38,8 +38,10 @@ Here are the available tools:
 class ToolAgent:
     """
     The ToolAgent class represents an agent that can interact with a language model and use tools
-    to assist with user queries. It generates function calls based on user input, validates arguments,
-    and runs the respective tools.
+    to assist with user queries. It:
+     - generates function calls based on user input, 
+     - validates arguments, and 
+     - runs the respective tools.
 
     Attributes:
         tools (Tool | list[Tool]): A list of tools available to the agent.
